@@ -2,16 +2,18 @@ import { Show, useClerk, useUser } from "@clerk/expo";
 // import { UserButton, UserProfileView } from "@clerk/expo/native";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-export default function Index() {
+export default function ListScreen() {
   const { user } = useUser();
   const { signOut } = useClerk();
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} className="bg-black">
       <Text style={styles.title}>Welcome!</Text>
 
       <Show when="signed-in">
-        <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
+        <Text className="text-white p-5 bg-gray-800 rounded-lg">
+          Hello {user?.emailAddresses[0].emailAddress}
+        </Text>
         <Pressable style={styles.button} onPress={() => signOut()}>
           <Text style={styles.buttonText}>Sign out</Text>
         </Pressable>
