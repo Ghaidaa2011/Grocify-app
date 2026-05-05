@@ -1,4 +1,5 @@
-import { GroceryItem, useGroceryStore } from "@/src/store/grocery-store";
+import { useGroceryStore } from "@/src/store/grocery-store";
+import { GroceryItem } from "@/src/types/grocery";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 

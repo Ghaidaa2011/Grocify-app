@@ -1,25 +1,5 @@
 import { create } from "zustand";
-
-export type GroceryCategory = "Produce" | "Dairy" | "Bakery" | "Pantry" | "Snacks";
-export type GroceryPriority = "low" | "medium" | "high";
-
-export type GroceryItem = {
-  id: string;
-  name: string;
-  category: GroceryCategory;
-  quantity: number;
-  purchased: boolean;
-  priority: GroceryPriority;
-
-}; export type CreateItemInput = {
-  name: string;
-  category: GroceryCategory;
-  quantity: number;
-  priority: GroceryPriority;
-};
-
-type ItemsResponse = { items: GroceryItem[] };
-type ItemResponse = { item: GroceryItem };
+import { CreateItemInput, GroceryItem, ItemResponse, ItemsResponse } from "../types/grocery";
 
 type GroceryStore = {
   items: GroceryItem[];
