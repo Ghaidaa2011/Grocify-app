@@ -20,7 +20,7 @@ export default Sentry.wrap(function RootLayout() {
   }
 
   Sentry.init({
-    dsn: "https://b53de6777482c36e5feb98e021621cf4@o4511264505200640.ingest.us.sentry.io/4511339274174464",
+    dsn: process.env.SENTRY_PUBLIC_DSN,
 
     integrations: [Sentry.feedbackIntegration()],
   });
