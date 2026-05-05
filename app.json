@@ -41,7 +41,15 @@
           }
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "grocify-app",
+          "organization": "myself-nos"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
