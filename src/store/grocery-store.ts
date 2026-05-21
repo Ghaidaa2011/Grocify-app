@@ -1,3 +1,4 @@
+import { Alert } from "react-native";
 import { create } from "zustand";
 import { CreateItemInput, GroceryItem, ItemResponse, ItemsResponse } from "../types/grocery";
 
@@ -77,25 +78,41 @@ export const useGroceryStore = create<GroceryStore>((set, get) => ({
     }
   },
   togglePurchased: async (id) => {
-    const currentItem = get().items.find((item) => item.id === id);
+    //find current item state before toggling for optimistic update and potential rollback
+    const previousItems = get().items;
+    //find the item to toggle
+    const currentItem = previousItems.find((item) => item.id === id);
+    //if item not found, do nothing
     if (!currentItem) return;
-    const nextPurchased = !currentItem.purchased;
-
-    set({ isLoading: true, error: null });
+    //optimistically update UI
+    set((state) => ({
+      items: state.items.map((item) =>
+        item.id === id ? { ...item, purchased: !item.purchased } : item
+      ),
+      error: null,
+    }));
+    //send toggle request to server
     try {
       const res = await fetch(`/api/items/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ purchased: nextPurchased }),
-      })
-      const payload = (await res.json()) as ItemResponse;
+        body: JSON.stringify({ purchased: !currentItem.purchased }),
+      });
+      //if response is not ok, throw error to trigger rollback
       if (!res.ok) throw new Error(`Request failed (${res.status})`);
-      set((state) => ({ items: state.items.map((item) => (item.id === id ? payload.item : item)) }))
+
     } catch (error) {
+      //rollback to previous state
+      set({ items: previousItems });
+
       console.error("Error toggling purchased:", error);
       set({ error: "Something went wrong" });
-    } finally {
-      set({ isLoading: false })
+      //show user-friendly alert
+      Alert.alert(
+        "Error connecting to server",
+        "We couldn't update the item status, please check your internet connection.",
+        [{ text: "Got it" }]
+      );
     }
   },
   removeItem: async (id) => {

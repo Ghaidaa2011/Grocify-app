@@ -18,8 +18,12 @@ export default function ListScreen() {
       data={pendingItems}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) =>
-        isLoading ? (
-          <PendingItemCardSkeleton />
+        isLoading && items.length === 0 ? (
+          <View style={{ gap: 14 }}>
+            <PendingItemCardSkeleton />
+            <PendingItemCardSkeleton />
+            <PendingItemCardSkeleton />
+          </View>
         ) : (
           <PendingItemCard item={item} />
         )

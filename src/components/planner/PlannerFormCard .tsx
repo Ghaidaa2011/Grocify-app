@@ -26,7 +26,7 @@ const priorityIcons = {
   low: "seedling",
 };
 const PlannerFormCard = () => {
-  const { error, addItem } = useGroceryStore();
+  const { error, addItem, isLoading } = useGroceryStore();
 
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("1");
@@ -161,7 +161,7 @@ const PlannerFormCard = () => {
           canCreate ? "bg-primary" : "bg-muted"
         }`}
         onPress={createItem}
-        disabled={!canCreate}
+        disabled={!canCreate || isLoading}
       >
         <FontAwesome6
           name="plus"
@@ -173,7 +173,7 @@ const PlannerFormCard = () => {
             canCreate ? "text-primary-foreground" : "text-muted-foreground"
           }`}
         >
-          Add to Grocery List
+          {isLoading ? "Adding..." : "Add to Grocery List"}
         </Text>
       </Pressable>
       {error ? (
